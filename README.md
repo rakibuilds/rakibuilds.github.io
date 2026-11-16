@@ -1,70 +1,59 @@
 # Rakibul AI Labs
 
-This is the official repository for [Rakibul AI Labs](https://rakibuilds.github.io/), the independent R&D sandbox of Rakibul Islam. 
+[![CI](https://github.com/rakibuilds/rakibuilds.github.io/actions/workflows/ci.yaml/badge.svg)](https://github.com/rakibuilds/rakibuilds.github.io/actions/workflows/ci.yaml)
+[![Live site](https://img.shields.io/badge/live-rakibuilds.github.io-22e8ff)](https://rakibuilds.github.io/)
 
-The lab focuses on building self-hosted AI infrastructure, running local Large Language Models (LLMs), and developing agentic AI workflows. This website serves as a showcase for active experiments and projects.
+The independent R&D sandbox of **Rakibul**, focused on self-hosted AI infrastructure, local Large Language Models (LLMs) and agentic AI workflows. This repository contains the source of the lab's website, which showcases active experiments and projects.
 
-## Live Website
-You can view the live site here: **[https://rakibuilds.github.io/](https://rakibuilds.github.io/)**
+**Live site:** [rakibuilds.github.io](https://rakibuilds.github.io/)
+
+## Highlights
+
+- **Interactive 3D hero:** a distorted, floating sphere rendered in WebGL.
+- **Dark, glassmorphic UI:** deep-space styling with ambient CSS glows.
+- **Mobile-first:** responsive layout, with reduced 3D complexity on small screens for slower connections.
+- **Fully static:** compiled to plain HTML, CSS and JavaScript and served from GitHub Pages, so no server is required.
 
 ## Tech Stack
 
-This project is built with a modern, performance-focused stack designed for 3D rendering and fast static deployment.
+| Area | Technology |
+| --- | --- |
+| Framework | [Next.js 16](https://nextjs.org/) (App Router, static export) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) |
+| 3D | [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) and [Drei](https://github.com/pmndrs/drei) |
+| Animation | [Framer Motion](https://www.framer.com/motion/) |
+| Icons | [Lucide React](https://lucide.dev/) |
+| Hosting and CI/CD | [GitHub Pages](https://pages.github.com/) and GitHub Actions |
 
-- **Framework:** [Next.js 16](https://nextjs.org/) (App Router, Static Export)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-- **3D Rendering:** [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) & [Drei](https://github.com/pmndrs/drei)
-- **Animation:** [Framer Motion](https://www.framer.com/motion/)
-- **Icons:** [Lucide React](https://lucide.dev/)
-- **Hosting:** [GitHub Pages](https://pages.github.com/)
-- **CI/CD:** GitHub Actions
+## Getting Started
 
-## Features
+**Prerequisites:** Node.js 20.9 or later and [pnpm](https://pnpm.io/).
 
-- **Interactive 3D Hero:** A distorted, floating sphere rendered in WebGL.
-- **Premium Dark UI:** A deep space aesthetic with ambient CSS glows and glassmorphism.
-- **Mobile-First Design:** Fully responsive layout optimized for slow connections (3G/4G) by reducing 3D complexity on smaller screens.
-- **Static Export:** Compiled to pure HTML/CSS/JS for lightning-fast load times and zero server costs.
-- **Automated Deployments:** Every push to `main` automatically builds and deploys the site via GitHub Actions.
+```bash
+git clone https://github.com/rakibuilds/rakibuilds.github.io.git
+cd rakibuilds.github.io
+pnpm install
+pnpm dev
+```
 
-## Local Development
-
-To run this project locally:
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/rakibuilds/rakibuilds.github.io.git
-   cd rakibuilds.github.io
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   pnpm install
-   ```
-
-3. **Run the development server:**
-   ```bash
-   pnpm dev
-   ```
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Then open [http://localhost:3000](http://localhost:3000).
 
 ## Deployment
 
-This site is configured for static export (`output: 'export'` in `next.config.ts`). 
+The site uses static export (`output: 'export'` in `next.config.ts`). Every push to `main` runs the workflow in `.github/workflows/ci.yaml`, which:
 
-When you push changes to the `main` branch, the GitHub Actions workflow (`.github/workflows/ci.yaml`) automatically:
 1. Installs dependencies.
 2. Runs the linter.
-3. Builds the static site into the `out/` folder.
-4. Deploys the `out/` folder to GitHub Pages.
+3. Builds the static site into `out/`.
+4. Deploys `out/` to GitHub Pages.
 
 ## Connect
 
-- **Main Portfolio:** [rakibul-labs.netlify.app](https://rakibul-labs.netlify.app/)
+- **Portfolio:** [rakibul-labs.netlify.app](https://rakibul-labs.netlify.app/)
 - **GitHub:** [@rakibuilds](https://github.com/rakibuilds)
 - **X (Twitter):** [@rakibuilds](https://x.com/rakibuilds)
 - **LinkedIn:** [Rakibul Islam](https://www.linkedin.com/in/rakibul4210i)
 
 ---
-*Built by [Rakibul Islam](https://rakibuilds.github.io/).*
+
+Built by [Rakibul](https://rakibuilds.github.io/).

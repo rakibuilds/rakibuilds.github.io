@@ -3,8 +3,9 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float, MeshDistortMaterial, Sphere, Stars } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { ArrowRight, Github, ExternalLink, Cpu, Database, Code2, Sparkles } from 'lucide-react';
+import { ArrowRight, Github, ExternalLink, Cpu, Database, Code2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const projects = [
   {
@@ -40,9 +41,16 @@ export default function Home() {
       {/* Navigation (Glassmorphism) */}
       <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#03040a]/60 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <Sparkles className="w-5 h-5 text-cyan-400 group-hover:animate-pulse" />
-            <span className="font-bold text-xl tracking-tight font-mono text-white/90">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-8 h-8 md:w-10 md:h-10 overflow-hidden rounded-lg">
+              <Image 
+                src="/logo.svg" 
+                alt="Rakibul AI Labs Logo" 
+                fill 
+                className="object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+            <span className="font-bold text-xl tracking-tight font-mono text-white/90 hidden sm:block">
               Rakibul<span className="text-cyan-400">.AI</span>
             </span>
           </Link>
@@ -59,10 +67,15 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
-        
+      <section 
+        className="relative h-screen flex items-center justify-center overflow-hidden pt-20 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/banner.webp')" }}
+      >
+        {/* Dark Overlay so text is readable over the banner */}
+        <div className="absolute inset-0 bg-[#03040a]/85 z-0"></div>
+
         {/* 3D Background */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 opacity-70">
           <Canvas camera={{ position: [0, 0, 6] }}>
             <ambientLight intensity={0.2} />
             <pointLight position={[10, 10, 10]} intensity={1.5} color="#79e4f2" />

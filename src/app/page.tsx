@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import { motion } from 'framer-motion';
@@ -33,12 +32,6 @@ const projects = [
 ];
 
 export default function Home() {
-  const [year, setYear] = useState<number | null>(null);
-
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
-
   return (
     <main className="min-h-screen bg-[#03040a] text-white selection:bg-cyan-400 selection:text-black font-sans overflow-x-hidden">
       
@@ -65,7 +58,6 @@ export default function Home() {
             </span>
           </Link>
           
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
             <a href="#projects" className="hover:text-white transition-colors">Experiments</a>
             <a href="https://github.com/rakibuilds" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
@@ -76,7 +68,6 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Mobile minimal nav */}
           <div className="flex md:hidden">
              <a href="https://github.com/rakibuilds" target="_blank" rel="noreferrer" className="p-2 rounded-lg border border-white/10 text-gray-300">
                 <Image src="/social/github.svg" alt="GitHub" width={20} height={20} className="invert opacity-80" />
@@ -88,7 +79,6 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden pt-16">
         
-        {/* 3D Background - Optimized for mobile */}
         <div className="absolute inset-0 z-0 opacity-60 md:opacity-80">
           <Canvas camera={{ position: [0, 0, 8] }} dpr={[1, 1.5]}>
             <ambientLight intensity={0.5} />
@@ -111,7 +101,6 @@ export default function Home() {
           </Canvas>
         </div>
 
-        {/* Hero Content */}
         <div className="relative z-10 text-center px-4 md:px-6 max-w-5xl mx-auto mt-[-5vh]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -205,7 +194,7 @@ export default function Home() {
       <footer className="border-t border-white/10 bg-[#03040a] py-8 md:py-12 relative z-10">
         <div className="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
           <div className="text-gray-400 text-xs md:text-sm text-center md:text-left">
-            © {year ?? '2026'} Rakibul AI Labs. All rights reserved.
+            © 2026 Rakibul AI Labs. All rights reserved.
           </div>
           <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm font-medium">
             <a href="https://github.com/rakibuilds" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 md:gap-2">

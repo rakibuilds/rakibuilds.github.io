@@ -13,6 +13,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://rakibuilds.github.io'),
   title: "Rakibul AI Labs | AI Infrastructure & Local LLMs in Assam",
   description: "Rakibul AI Labs is a premier AI research sandbox based in Assam, India. We build self-hosted AI infrastructure, run local LLMs, and develop agentic AI workflows. Explore our experiments in privacy-first AI.",
   keywords: [
@@ -38,10 +39,10 @@ export const metadata: Metadata = {
     siteName: "Rakibul AI Labs",
     images: [
       {
-        url: "/logo.svg", 
-        width: 800,
-        height: 800,
-        alt: "Rakibul AI Labs Logo",
+        url: "/og-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "Rakibul AI Labs Banner",
       },
     ],
     locale: "en_IN",
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     title: "Rakibul AI Labs",
     description: "Building self-hosted AI systems, local LLMs, and agentic workflows from Assam, India.",
     creator: "@rakibuilds",
-    images: ["/logo.svg"],
+    images: ["/og-image.webp"],
   },
   robots: {
     index: true,

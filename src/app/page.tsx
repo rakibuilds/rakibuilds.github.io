@@ -3,7 +3,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float, MeshDistortMaterial, Sphere, Stars } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { ArrowRight, Github, ExternalLink, Cpu, Database, Code2 } from 'lucide-react';
+import { ArrowRight, Globe, ExternalLink, Cpu, Database, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 

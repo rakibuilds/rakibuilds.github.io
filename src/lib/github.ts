@@ -13,6 +13,21 @@ export type Project = {
   defaultBranch: string; // NEW — needed for README image paths
 };
 
+// Define GitHub API repository response structure
+interface GitHubRepo {
+  name: string;
+  description?: string | null;
+  html_url: string;
+  homepage?: string | null;
+  language?: string | null;
+  topics?: string[];
+  stargazers_count: number;
+  updated_at: string;
+  default_branch?: string;
+  fork?: boolean;
+  archived?: boolean;
+}
+
 const USERNAME = 'rakibuilds';
 const EXCLUDE = new Set(['rakibuilds.github.io']);
 
@@ -26,14 +41,14 @@ function headers(accept: string = 'application/vnd.github+json') {
   };
 }
 
-function mapRepo(r: any): Project {
+function mapRepo(r: GitHubRepo): Project {
   return {
     name: r.name,
     description: r.description ?? '',
     url: r.html_url,
     liveUrl: `https://${USERNAME}.github.io/${r.name}/`,
     homepage: r.homepage || null,
-    language: r.language,
+    language: r.language || null,
     topics: r.topics ?? [],
     stars: r.stargazers_count,
     updatedAt: r.updated_at,
@@ -53,7 +68,7 @@ export async function getProjects(): Promise<Project[]> {
     return [];
   }
 
-  const repos = (await res.json()) as any[];
+  const repos = (await res.json()) as GitHubRepo[];
   return repos
     .filter((r) => !r.fork && !r.archived && !EXCLUDE.has(r.name))
     .map(mapRepo)
@@ -71,7 +86,8 @@ export async function getRepo(repoName: string): Promise<Project | null> {
     console.error(`getRepo(${repoName}) failed:`, res.status);
     return null;
   }
-  return mapRepo(await res.json());
+  const repoData = (await res.json()) as GitHubRepo;
+  return mapRepo(repoData);
 }
 
 // ---------- README: raw markdown for a repo ----------
@@ -85,7 +101,7 @@ export async function getReadme(repoName: string): Promise<{
     { headers: headers(), next: { revalidate: 3600 } }
   );
   if (!repoRes.ok) return null;
-  const repoData = await repoRes.json();
+  const repoData = (await repoRes.json()) as GitHubRepo;
   const branch = repoData.default_branch || 'main';
 
   // 2. Fetch raw README

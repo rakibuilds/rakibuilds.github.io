@@ -8,13 +8,93 @@ docUrl: "https://github.com/rakibuilds"
 repoUrl: "https://github.com/rakibuilds"
 ---
 
+*A fully private agent that never phones home.*
+
+<div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "16px 0 28px" }}>
+<span style={{ border: "1px solid #3b82f6", background: "#3b82f61a", borderRadius: 999, padding: "4px 14px", fontSize: 13, fontWeight: 600 }}>Python</span>
+<span style={{ border: "1px solid #10b981", background: "#10b9811a", borderRadius: 999, padding: "4px 14px", fontSize: 13, fontWeight: 600 }}>LangChain</span>
+<span style={{ border: "1px solid #f97316", background: "#f973161a", borderRadius: 999, padding: "4px 14px", fontSize: 13, fontWeight: 600 }}>Ollama</span>
+<span style={{ border: "1px solid #8b5cf6", background: "#8b5cf61a", borderRadius: 999, padding: "4px 14px", fontSize: 13, fontWeight: 600 }}>SQLite</span>
+<span style={{ border: "1px solid #ec4899", background: "#ec48991a", borderRadius: 999, padding: "4px 14px", fontSize: 13, fontWeight: 600 }}>GGUF</span>
+</div>
+
 ## The Hypothesis
-Running LLMs locally requires significant hardware resources, and orchestrating an agent that can reliably use tools without hallucinating is difficult. Can we build a completely private agent?
+
+Running LLMs locally takes serious hardware, and getting an agent to use tools reliably without hallucinating is hard.
+
+<div style={{ border: "1px solid rgba(128,128,128,0.3)", borderRadius: 16, padding: 24, margin: "24px 0" }}>
+<div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, opacity: 0.6 }}>THE QUESTION</div>
+<div style={{ fontSize: 22, fontWeight: 700, margin: "8px 0 18px", lineHeight: 1.4 }}>Can we build a completely private agent?</div>
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 }}>
+<div style={{ background: "#f59e0b1a", border: "1px solid #f59e0b", borderRadius: 12, padding: 14 }}>
+<div style={{ fontWeight: 700 }}>Hardware limits</div>
+<div style={{ fontSize: 14, opacity: 0.85, marginTop: 4, lineHeight: 1.5 }}>Local models have to fit and run on the resources you actually have.</div>
+</div>
+<div style={{ background: "#ef44441a", border: "1px solid #ef4444", borderRadius: 12, padding: 14 }}>
+<div style={{ fontWeight: 700 }}>Reliable tool use</div>
+<div style={{ fontSize: 14, opacity: 0.85, marginTop: 4, lineHeight: 1.5 }}>The agent must call tools correctly instead of inventing results.</div>
+</div>
+<div style={{ background: "#10b9811a", border: "1px solid #10b981", borderRadius: 12, padding: 14 }}>
+<div style={{ fontWeight: 700 }}>Total privacy</div>
+<div style={{ fontSize: 14, opacity: 0.85, marginTop: 4, lineHeight: 1.5 }}>No data may leave the machine, at any step.</div>
+</div>
+</div>
+</div>
 
 ## The Build
-I built a fully offline agent using **Ollama** to serve the models and **LangChain** to manage the memory and tool usage. The system uses a local SQLite database for memory.
+
+I built a fully offline agent using **Ollama** to serve the models and **LangChain** to manage memory and tool usage. A local SQLite database stores the agent's memory.
+
+<div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 10, margin: "28px 0" }}>
+<div style={{ border: "2px solid #64748b", background: "#64748b1a", borderRadius: 12, padding: "12px 16px", textAlign: "center", minWidth: 140 }}>
+<div style={{ fontWeight: 700, fontSize: 14 }}>Your Task</div>
+<div style={{ fontSize: 12, opacity: 0.75 }}>Input</div>
+</div>
+<span style={{ fontSize: 22, opacity: 0.5 }}>→</span>
+<div style={{ border: "2px solid #10b981", background: "#10b9811a", borderRadius: 12, padding: "12px 16px", textAlign: "center", minWidth: 140 }}>
+<div style={{ fontWeight: 700, fontSize: 14 }}>LangChain</div>
+<div style={{ fontSize: 12, opacity: 0.75 }}>Agent and orchestration</div>
+</div>
+<span style={{ fontSize: 22, opacity: 0.5 }}>→</span>
+<div style={{ border: "2px solid #f97316", background: "#f973161a", borderRadius: 12, padding: "12px 16px", textAlign: "center", minWidth: 140 }}>
+<div style={{ fontWeight: 700, fontSize: 14 }}>Ollama</div>
+<div style={{ fontSize: 12, opacity: 0.75 }}>Serves the local model</div>
+</div>
+<span style={{ fontSize: 22, opacity: 0.5 }}>→</span>
+<div style={{ border: "2px solid #3b82f6", background: "#3b82f61a", borderRadius: 12, padding: "12px 16px", textAlign: "center", minWidth: 140 }}>
+<div style={{ fontWeight: 700, fontSize: 14 }}>Tools</div>
+<div style={{ fontSize: 12, opacity: 0.75 }}>File search, Python</div>
+</div>
+<span style={{ fontSize: 22, opacity: 0.5 }}>→</span>
+<div style={{ border: "2px solid #8b5cf6", background: "#8b5cf61a", borderRadius: 12, padding: "12px 16px", textAlign: "center", minWidth: 140 }}>
+<div style={{ fontWeight: 700, fontSize: 14 }}>SQLite</div>
+<div style={{ fontSize: 12, opacity: 0.75 }}>Local memory</div>
+</div>
+</div>
+
+<div style={{ borderLeft: "4px solid #3b82f6", background: "#3b82f61a", borderRadius: 8, padding: "14px 18px", margin: "24px 0" }}>
+<div style={{ fontWeight: 700, marginBottom: 4 }}>Everything runs on one machine</div>
+<div style={{ lineHeight: 1.6 }}>The model server, the agent logic, the tools and the memory store all live locally. There is no external API call anywhere in the loop.</div>
+</div>
 
 ### Key Features
-- **100% Offline:** No data ever leaves the machine.
-- **Tool Use:** The agent can search local files and execute Python code safely.
-- **Fast Inference:** Optimized using quantized GGUF models.
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, margin: "24px 0" }}>
+<div style={{ border: "1px solid rgba(128,128,128,0.3)", borderTop: "4px solid #10b981", borderRadius: 12, padding: 18 }}>
+<div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>100% Offline</div>
+<div style={{ fontSize: 14, lineHeight: 1.6, opacity: 0.85 }}>No data ever leaves the machine.</div>
+</div>
+<div style={{ border: "1px solid rgba(128,128,128,0.3)", borderTop: "4px solid #3b82f6", borderRadius: 12, padding: 18 }}>
+<div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>Tool Use</div>
+<div style={{ fontSize: 14, lineHeight: 1.6, opacity: 0.85 }}>The agent can search local files and execute Python code safely.</div>
+</div>
+<div style={{ border: "1px solid rgba(128,128,128,0.3)", borderTop: "4px solid #f97316", borderRadius: 12, padding: 18 }}>
+<div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>Fast Inference</div>
+<div style={{ fontSize: 14, lineHeight: 1.6, opacity: 0.85 }}>Optimized using quantized GGUF models.</div>
+</div>
+</div>
+
+<div style={{ borderLeft: "4px solid #10b981", background: "#10b9811a", borderRadius: 8, padding: "14px 18px", margin: "24px 0" }}>
+<div style={{ fontWeight: 700, marginBottom: 4 }}>Why quantized GGUF?</div>
+<div style={{ lineHeight: 1.6 }}>Quantization shrinks the model's weights so it fits in modest memory, which is what makes running an agent on ordinary hardware realistic.</div>
+</div>

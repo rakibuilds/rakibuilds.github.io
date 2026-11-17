@@ -1,19 +1,20 @@
 // src/components/hero-3d.tsx
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Float, MeshDistortMaterial, Sphere, Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 function Particles({ count = 2000 }: { count?: number }) {
-  const positions = useMemo(() => {
+  // Initialize positions via lazy state to keep the component/hook pure during render
+  const [positions] = useState(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count * 3; i++) {
       arr[i] = (Math.random() - 0.5) * 20;
     }
     return arr;
-  }, [count]);
+  });
 
   return (
     <Points positions={positions} stride={3} frustumCulled={false}>

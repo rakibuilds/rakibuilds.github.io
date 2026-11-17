@@ -36,8 +36,8 @@ function detectHighEndDevice(): boolean {
   const cores = navigator.hardwareConcurrency ?? 2;
   if (cores <= 2) return false;
 
-  // Check device memory (Chrome only, undefined elsewhere)
-  const memory = (navigator as any).deviceMemory;
+  // Check device memory safely without `any`
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
   if (typeof memory === 'number' && memory < 4) return false;
 
   // Check WebGL support
@@ -55,13 +55,9 @@ function detectHighEndDevice(): boolean {
 
 export default function Hero3DLazy() {
   const ref = useRef<HTMLDivElement>(null);
-  const [shouldRender, setShouldRender] = useState(false);
+  // Initialize lazily to prevent calling setState synchronously inside an effect
+  const [shouldRender] = useState(() => detectHighEndDevice());
   const [visible, setVisible] = useState(false);
-
-  // Decide device tier once on mount
-  useEffect(() => {
-    setShouldRender(detectHighEndDevice());
-  }, []);
 
   // Only mount the 3D bundle when hero scrolls into view
   useEffect(() => {

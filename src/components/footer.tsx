@@ -1,6 +1,6 @@
+// src/components/footer.tsx
 import Image from 'next/image';
-import Link from 'next/link';
-import { siteConfig } from '@/lib/config'
+import { siteConfig } from '@/lib/config';
 
 export default function Footer() {
   return (

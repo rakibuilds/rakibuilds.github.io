@@ -31,6 +31,7 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
   const project = getContent('projects').find((p) => p.slug === slug);
   if (!project) notFound();
 
@@ -47,6 +48,9 @@ export default async function ProjectDetailPage({
   }
 
   const { content: mdxBody } = matter(raw);
+
+  // The README wins when there is one; the local MDX body is the fallback.
+  const body = readme ?? mdxBody;
 
   return (
     <main className="min-h-screen bg-[#03040a] text-white font-sans selection:bg-emerald-400 selection:text-black">
@@ -81,7 +85,11 @@ export default async function ProjectDetailPage({
               )}
               <span className="inline-flex items-center gap-1.5">
                 <Calendar size={14} /> Updated{' '}
-                {new Date(repo.updatedAt).toLocaleDateString()}
+                {new Date(repo.updatedAt).toLocaleDateString('en-IN', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
               </span>
             </div>
           )}
@@ -124,28 +132,27 @@ export default async function ProjectDetailPage({
                 GitHub Repo <Code2 size={16} />
               </a>
             )}
-            <ShareButton title={project.title} text={project.description} />
           </div>
         </div>
 
         <div className="prose prose-invert max-w-none">
-          {readme ? (
+          {body ? (
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw, rehypeSanitize]}
             >
-              {readme}
-            </ReactMarkdown>
-          ) : mdxBody ? (
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw, rehypeSanitize]}
-            >
-              {mdxBody}
+              {body}
             </ReactMarkdown>
           ) : (
             <p className="text-gray-500">No content available.</p>
           )}
+        </div>
+
+        <div className="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-mono uppercase tracking-wider text-gray-500">
+            Share this project
+          </p>
+          <ShareButton title={project.title} text={project.description} />
         </div>
       </div>
     </main>

@@ -26,10 +26,12 @@ export default async function ExperimentPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = getContent('experiments').find((p) => p.slug === slug);
-  const rawContent = getRawContent('experiments', slug);
 
-  if (!project || !rawContent) notFound();
+  const project = getContent('experiments').find((p) => p.slug === slug);
+  if (!project) notFound();
+
+  const rawContent = getRawContent('experiments', slug);
+  if (!rawContent) notFound();
 
   const { content: body } = matter(rawContent);
   const { content } = await compileMDX({
@@ -100,12 +102,18 @@ export default async function ExperimentPage({
                 GitHub Repo <Code2 size={16} />
               </a>
             )}
-            <ShareButton title={project.title} text={project.description} />
           </div>
         </div>
 
         <div className="prose prose-invert prose-cyan max-w-none">
           {content}
+        </div>
+
+        <div className="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-mono uppercase tracking-wider text-gray-500">
+            Share this experiment
+          </p>
+          <ShareButton title={project.title} text={project.description} />
         </div>
       </div>
     </main>

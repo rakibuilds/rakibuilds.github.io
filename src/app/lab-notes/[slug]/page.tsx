@@ -27,16 +27,21 @@ export default async function LabNotePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getContent('lab-notes').find((p) => p.slug === slug);
-  const rawContent = getRawContent('lab-notes', slug);
 
-  if (!post || !rawContent) notFound();
+  const post = getContent('lab-notes').find((p) => p.slug === slug);
+  if (!post) notFound();
+
+  const rawContent = getRawContent('lab-notes', slug);
+  if (!rawContent) notFound();
 
   const { content: body } = matter(rawContent);
   const { content } = await compileMDX({
     source: body,
     options: { parseFrontmatter: false },
   });
+
+  // Lab notes use `excerpt` in frontmatter rather than `description`.
+  const shareText = post.description ?? post.excerpt;
 
   return (
     <main className="min-h-screen bg-[#03040a] text-white font-sans selection:bg-cyan-400 selection:text-black">
@@ -52,14 +57,18 @@ export default async function LabNotePage({
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <p className="text-gray-500 font-mono text-sm">{post.date}</p>
-            <ShareButton title={post.title} text={post.description} align="right" />
-          </div>
+          <p className="text-gray-500 font-mono text-sm">{post.date}</p>
         </div>
 
         <div className="prose prose-invert prose-cyan max-w-none">
           {content}
+        </div>
+
+        <div className="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-mono uppercase tracking-wider text-gray-500">
+            Share this lab note
+          </p>
+          <ShareButton title={post.title} text={shareText} />
         </div>
       </div>
     </main>

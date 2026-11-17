@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useState, useSyncExternalStore } from 'react';
+import { usePathname } from 'next/navigation';
 import { Share2, Link2, Check } from 'lucide-react';
 
 type ShareButtonProps = {
@@ -10,13 +11,16 @@ type ShareButtonProps = {
   text?: string;
   /** Optional URL. Relative paths are fine. Defaults to the current page. */
   url?: string;
-  /** 'menu' shows one Share button with a dropdown. 'inline' shows a row of icon buttons. */
-  variant?: 'menu' | 'inline';
-  /** Which edge the dropdown lines up with. */
-  align?: 'left' | 'right';
-  /** Text on the trigger button. */
-  label?: string;
   className?: string;
+  /**
+   * @deprecated The dropdown variant was removed; the button always renders
+   * as a single row of icons. Kept so existing call sites still type-check.
+   */
+  variant?: 'menu' | 'inline';
+  /** @deprecated No dropdown, so there is nothing to align. */
+  align?: 'left' | 'right';
+  /** @deprecated No dropdown trigger, so there is no label to set. */
+  label?: string;
 };
 
 /* ---------- Brand icons (inline so there is no dependency on lucide brand icons) ---------- */
@@ -45,12 +49,24 @@ const LinkedInIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-/* ---------- Shared Tailwind classes ---------- */
+/* ---------- Helpers ---------- */
+
+/** Canonical origin, used to build absolute share URLs during prerender too. */
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://rakibuilds.github.io'
+).replace(/\/+$/, '');
+
+/** A store that never changes, so the client snapshot is read exactly once. */
+const subscribe = () => () => {};
+
+function resolveHref(url: string | undefined, pathname: string | null): string {
+  const target = url ?? pathname ?? '/';
+  if (/^https?:\/\//i.test(target)) return target;
+  return `${SITE_URL}${target.startsWith('/') ? target : `/${target}`}`;
+}
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400';
-
-const itemClass = `flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white ${focusRing}`;
 
 const iconButtonClass = `inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-300 transition-colors hover:border-white/20 hover:text-white ${focusRing}`;
 
@@ -60,51 +76,26 @@ export function ShareButton({
   title,
   text,
   url,
-  variant = 'menu',
-  align = 'left',
-  label = 'Share',
   className = '',
 }: ShareButtonProps) {
-  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [canNativeShare, setCanNativeShare] = useState(false);
-  const [href, setHref] = useState(url ?? '');
-  const rootRef = useRef<HTMLDivElement>(null);
-  const menuId = useId();
+  const pathname = usePathname();
 
-  // Resolve the final URL and check native share support on the client only.
-  useEffect(() => {
-    setCanNativeShare(
-      typeof navigator !== 'undefined' && typeof navigator.share === 'function'
-    );
-    setHref(
-      url ? new URL(url, window.location.origin).toString() : window.location.href
-    );
-  }, [url]);
+  // Absolute, hydration-safe, and correct after client-side navigation.
+  const href = resolveHref(url, pathname);
 
-  // Close the menu on outside click or Escape.
-  useEffect(() => {
-    if (!open) return;
-    const onClick = (e: MouseEvent) => {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('mousedown', onClick);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onClick);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [open]);
+  // Client-only capability, read at hydration with no effect and no mismatch.
+  const canNativeShare = useSyncExternalStore(
+    subscribe,
+    () => typeof navigator !== 'undefined' && typeof navigator.share === 'function',
+    () => false
+  );
 
   const shareText = text ? `${title}: ${text}` : title;
 
   const nativeShare = useCallback(async () => {
     try {
       await navigator.share({ title, text, url: href });
-      setOpen(false);
     } catch {
       // The person closed the share sheet. Nothing to do.
     }
@@ -152,111 +143,50 @@ export function ShareButton({
     },
   ];
 
-  const status = (
-    <span className="sr-only" role="status" aria-live="polite">
-      {copied ? 'Link copied' : ''}
-    </span>
-  );
-
-  /* ----- Inline row of icon buttons ----- */
-  if (variant === 'inline') {
-    return (
-      <div className={`relative inline-block ${className}`} ref={rootRef}>
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Share this page">
-          {canNativeShare && (
-            <button
-              type="button"
-              onClick={nativeShare}
-              className={iconButtonClass}
-              aria-label="Share using your device"
-              title="Share using your device"
-            >
-              <Share2 size={18} />
-            </button>
-          )}
+  return (
+    <div className={`inline-block ${className}`}>
+      <div
+        className="flex flex-wrap items-center gap-2"
+        role="group"
+        aria-label="Share this page"
+      >
+        {canNativeShare && (
           <button
             type="button"
-            onClick={copyLink}
+            onClick={nativeShare}
             className={iconButtonClass}
-            aria-label={copied ? 'Link copied' : 'Copy link'}
-            title={copied ? 'Link copied' : 'Copy link'}
+            aria-label="Share using your device"
+            title="Share using your device"
           >
-            {copied ? <Check size={18} className="text-cyan-400" /> : <Link2 size={18} />}
+            <Share2 size={18} />
           </button>
-          {socials.map(({ name, Icon, href: shareHref }) => (
-            <a
-              key={name}
-              href={shareHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={iconButtonClass}
-              aria-label={`Share on ${name}`}
-              title={`Share on ${name}`}
-            >
-              <Icon className="h-[18px] w-[18px]" />
-            </a>
-          ))}
-        </div>
-        {status}
-      </div>
-    );
-  }
-
-  /* ----- Share button with dropdown ----- */
-  return (
-    <div className={`relative inline-block ${className}`} ref={rootRef}>
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="true"
-        aria-expanded={open}
-        aria-controls={menuId}
-        className={`flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-gray-400 transition-colors hover:border-white/20 hover:text-white ${focusRing}`}
-      >
-        <Share2 size={14} />
-        {label}
-      </button>
-
-      {open && (
-        <div
-          id={menuId}
-          className={`absolute top-full z-50 mt-2 w-60 rounded-lg border border-white/10 bg-[#0a0b10] p-1.5 shadow-2xl shadow-black/50 ${
-            align === 'right' ? 'right-0' : 'left-0'
-          }`}
+        )}
+        <button
+          type="button"
+          onClick={copyLink}
+          className={iconButtonClass}
+          aria-label={copied ? 'Link copied' : 'Copy link'}
+          title={copied ? 'Link copied' : 'Copy link'}
         >
-          {canNativeShare && (
-            <>
-              <button type="button" onClick={nativeShare} className={itemClass}>
-                <Share2 size={18} />
-                Share using your device
-              </button>
-              <div className="mx-1 my-1.5 h-px bg-white/10" />
-            </>
-          )}
-
-          <button type="button" onClick={copyLink} className={itemClass}>
-            {copied ? <Check size={18} className="text-cyan-400" /> : <Link2 size={18} />}
-            {copied ? 'Link copied' : 'Copy link'}
-          </button>
-
-          <div className="mx-1 my-1.5 h-px bg-white/10" />
-
-          {socials.map(({ name, Icon, href: shareHref }) => (
-            <a
-              key={name}
-              href={shareHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-              className={itemClass}
-            >
-              <Icon className="h-[18px] w-[18px]" />
-              {name}
-            </a>
-          ))}
-        </div>
-      )}
-      {status}
+          {copied ? <Check size={18} className="text-cyan-400" /> : <Link2 size={18} />}
+        </button>
+        {socials.map(({ name, Icon, href: shareHref }) => (
+          <a
+            key={name}
+            href={shareHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={iconButtonClass}
+            aria-label={`Share on ${name}`}
+            title={`Share on ${name}`}
+          >
+            <Icon className="h-[18px] w-[18px]" />
+          </a>
+        ))}
+      </div>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? 'Link copied' : ''}
+      </span>
     </div>
   );
 }

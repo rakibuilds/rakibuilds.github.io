@@ -17,15 +17,18 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://rakibuilds.github.io'),
-  title: "Rakibul AI Labs | AI Infrastructure & Local LLMs in Assam",
+  title: {
+    default: "Rakibul AI Labs | AI Infrastructure & Local LLMs in Assam",
+    template: "%s | Rakibul AI Labs",
+  },
   description: "Rakibul AI Labs is a premier AI research sandbox based in Assam, India. We build self-hosted AI infrastructure, run local LLMs, and develop agentic AI workflows. Explore our experiments in privacy-first AI.",
   keywords: [
-    "AI in Assam", 
-    "Rakibul AI Labs", 
-    "Local LLMs", 
-    "Self-hosted AI", 
-    "Agentic Workflows", 
-    "AI infrastructure India", 
+    "AI in Assam",
+    "Rakibul AI Labs",
+    "Local LLMs",
+    "Self-hosted AI",
+    "Agentic Workflows",
+    "AI infrastructure India",
     "Rakibul Islam AI",
     "Assam tech startups",
     "open source AI Assam"
@@ -42,7 +45,7 @@ export const metadata: Metadata = {
     siteName: "Rakibul AI Labs",
     images: [
       {
-        url: "/og-image.webp",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Rakibul AI Labs Banner",
@@ -84,6 +87,10 @@ export default function RootLayout({
     ...getContent('lab-notes').map((n) => ({
       ...n,
       type: 'lab-notes' as const,
+    })),
+    ...getContent('projects').map((p) => ({
+      ...p,
+      type: 'projects' as const,
     })),
   ];
 

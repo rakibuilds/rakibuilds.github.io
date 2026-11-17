@@ -7,7 +7,7 @@ import { Search, Menu, X } from 'lucide-react';
 import type { BaseContent } from '@/lib/content-loader';
 import SearchModal from './search-modal';
 
-type SearchItem = BaseContent & { type: 'experiments' | 'lab-notes' };
+type SearchItem = BaseContent & { type: 'experiments' | 'lab-notes' | 'projects' };
 
 export default function Navbar({ searchItems }: { searchItems: SearchItem[] }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);

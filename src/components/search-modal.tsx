@@ -2,12 +2,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, X, BookOpen, Cpu } from 'lucide-react';
+import { Search, X, BookOpen, Cpu, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { BaseContent } from '@/lib/content-loader';
 
-type SearchItem = BaseContent & { type: 'experiments' | 'lab-notes' };
+type SearchItem = BaseContent & { type: 'experiments' | 'lab-notes' | 'projects' };
 
 export default function SearchModal({
   isOpen,
@@ -41,6 +41,7 @@ export default function SearchModal({
 
   const experiments = filtered.filter((i) => i.type === 'experiments');
   const notes = filtered.filter((i) => i.type === 'lab-notes');
+  const projects = filtered.filter((i) => i.type === 'projects');
 
   return (
     <AnimatePresence>
@@ -65,7 +66,7 @@ export default function SearchModal({
                 <input
                   autoFocus
                   type="text"
-                  placeholder="Search experiments, lab notes, tech..."
+                  placeholder="Search experiments, lab notes, projects..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="flex-1 bg-transparent text-white placeholder-gray-500 outline-none text-lg"
@@ -118,7 +119,7 @@ export default function SearchModal({
                     )}
 
                     {notes.length > 0 && (
-                      <div>
+                      <div className="mb-4">
                         <div className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-gray-500">
                           Lab Notes
                         </div>
@@ -138,6 +139,34 @@ export default function SearchModal({
                               </h4>
                               <p className="text-xs text-gray-400 line-clamp-1">
                                 {note.excerpt || note.description}
+                              </p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {projects.length > 0 && (
+                      <div>
+                        <div className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-gray-500">
+                          Projects
+                        </div>
+                        {projects.map((project) => (
+                          <Link
+                            key={project.slug}
+                            href={`/projects/${project.slug}`}
+                            onClick={onClose}
+                            className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors group"
+                          >
+                            <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-emerald-400">
+                              <Code2 size={20} />
+                            </div>
+                            <div>
+                              <h4 className="text-white font-medium group-hover:text-emerald-400 transition-colors">
+                                {project.title}
+                              </h4>
+                              <p className="text-xs text-gray-400 line-clamp-1">
+                                {project.description}
                               </p>
                             </div>
                           </Link>

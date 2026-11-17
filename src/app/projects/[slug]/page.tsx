@@ -9,9 +9,20 @@ import rehypeSanitize from 'rehype-sanitize';
 import { ArrowLeft, ExternalLink, Code2, Star, Code, Calendar } from 'lucide-react';
 import { getContent, getContentSlugs, getRawContent } from '@/lib/content-loader';
 import { getRepo, getReadme, fixReadmeImages } from '@/lib/github';
+import { ShareButton } from '@/components/share-button';
+import { getPageMetadata } from '@/lib/og';
 
 export function generateStaticParams() {
   return getContentSlugs('projects').map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  return getPageMetadata('projects', slug);
 }
 
 export default async function ProjectDetailPage({
@@ -92,7 +103,7 @@ export default async function ProjectDetailPage({
             {project.description}
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
@@ -113,6 +124,7 @@ export default async function ProjectDetailPage({
                 GitHub Repo <Code2 size={16} />
               </a>
             )}
+            <ShareButton title={project.title} text={project.description} />
           </div>
         </div>
 

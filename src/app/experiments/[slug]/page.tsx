@@ -4,9 +4,20 @@ import matter from 'gray-matter';
 import { ArrowLeft, ExternalLink, BookOpen, Code2 } from 'lucide-react';
 import { getContent, getContentSlugs, getRawContent } from '@/lib/content-loader';
 import { compileMDX } from 'next-mdx-remote/rsc';
+import { ShareButton } from '@/components/share-button';
+import { getPageMetadata } from '@/lib/og';
 
 export function generateStaticParams() {
   return getContentSlugs('experiments').map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  return getPageMetadata('experiments', slug);
 }
 
 export default async function ExperimentPage({
@@ -58,7 +69,7 @@ export default async function ExperimentPage({
             {project.description}
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
@@ -89,6 +100,7 @@ export default async function ExperimentPage({
                 GitHub Repo <Code2 size={16} />
               </a>
             )}
+            <ShareButton title={project.title} text={project.description} />
           </div>
         </div>
 

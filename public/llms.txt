@@ -1,0 +1,15 @@
+# Rakibul AI Labs
+
+> A research sandbox for local LLMs, agentic workflows, and self-hosted AI infrastructure. Built for privacy, speed, and absolute control.
+
+## Pages
+
+- [Home](https://rakibuilds.github.io/): Overview and featured experiments
+- [Experiments](https://rakibuilds.github.io/experiments/): R&D deep dives
+- [Lab Notes](https://rakibuilds.github.io/lab-notes/): Essays and thinking
+- [Projects](https://rakibuilds.github.io/projects/): Live, deployed work
+
+## Links
+
+- [GitHub](https://github.com/rakibuilds)
+- [X / Twitter](https://x.com/rakibuilds)

@@ -1,10 +1,28 @@
 @import "tailwindcss";
 
+@plugin "@tailwindcss/typography";
+
 :root {
   --background: #03040a;
   --foreground: #ffffff;
 }
 
+/* After the @plugin line */
+.prose {
+  --tw-prose-body: #d1d5db;
+  --tw-prose-headings: #ffffff;
+  --tw-prose-links: #34d399;      /* emerald-400 */
+  --tw-prose-bold: #ffffff;
+  --tw-prose-code: #a5f3fc;       /* cyan-200 */
+  --tw-prose-pre-bg: #0a0c14;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-borders: rgba(255, 255, 255, 0.1);
+  --tw-prose-quotes: #9ca3af;
+  --tw-prose-quote-borders: #34d399;
+  --tw-prose-hr: rgba(255, 255, 255, 0.1);
+  --tw-prose-th-borders: rgba(255, 255, 255, 0.15);
+  --tw-prose-td-borders: rgba(255, 255, 255, 0.08);
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

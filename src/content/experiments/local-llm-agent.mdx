@@ -1,0 +1,20 @@
+---
+title: "Local LLM Agent"
+description: "An autonomous agent running entirely offline using Ollama and LangChain for private data analysis and task execution."
+date: "2026-11-17"
+tags: ["Python", "LangChain", "Ollama"]
+liveUrl: "https://github.com/rakibuilds"
+docUrl: "https://github.com/rakibuilds"
+repoUrl: "https://github.com/rakibuilds"
+---
+
+## The Hypothesis
+Running LLMs locally requires significant hardware resources, and orchestrating an agent that can reliably use tools without hallucinating is difficult. Can we build a completely private agent?
+
+## The Build
+I built a fully offline agent using **Ollama** to serve the models and **LangChain** to manage the memory and tool usage. The system uses a local SQLite database for memory.
+
+### Key Features
+- **100% Offline:** No data ever leaves the machine.
+- **Tool Use:** The agent can search local files and execute Python code safely.
+- **Fast Inference:** Optimized using quantized GGUF models.

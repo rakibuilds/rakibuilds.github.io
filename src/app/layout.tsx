@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import { getContent } from "@/lib/content-loader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -73,13 +76,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const searchItems = [
+    ...getContent('experiments').map((e) => ({
+      ...e,
+      type: 'experiments' as const,
+    })),
+    ...getContent('lab-notes').map((n) => ({
+      ...n,
+      type: 'lab-notes' as const,
+    })),
+  ];
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[#03040a] text-white">
-        {children}
+        <Navbar searchItems={searchItems} />
+        <div className="flex-grow">
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );

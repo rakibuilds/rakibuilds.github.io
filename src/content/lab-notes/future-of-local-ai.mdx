@@ -38,12 +38,11 @@ Don't want to wrestle with command-line flags? **[Ollama](https://ollama.com/)**
 ## The Art of Squeezing a Giant into a Backpack
 
 Here's the trick that makes all this possible: **quantization**. It compresses a model's weights into fewer bits, so a model that once demanded a server rack can fit in your GPU's memory. The trade-off is a small loss in quality (measured as *perplexity*), so the real question is how much compression you can get away with.
+**Format comparison**
 
-| Format | Bits per Weight | The Vibe | Reach for it when... |
-| :--- | :--- | :--- | :--- |
-| **Q4_K_M** | ~4.5 | The sweet spot: fast, with minimal quality loss | Everyday chat and coding |
-| **Q5_K_M** | ~5.5 | A bit more fidelity for a bit more VRAM | Multi-step reasoning and logic-heavy work |
-| **EXL2 (3.0–5.0 bpw)** | Variable | Flexible and very fast on NVIDIA GPUs | Real-time apps and agent loops |
+- **Q4_K_M** (~4.5 bits/weight) — The sweet spot: fast, with minimal quality loss. Use for everyday chat and coding.
+- **Q5_K_M** (~5.5 bits/weight) — A bit more fidelity for a bit more VRAM. Use for multi-step reasoning and logic-heavy work.
+- **EXL2 (3.0–5.0 bpw)** (Variable) — Flexible and very fast on NVIDIA GPUs. Use for real-time apps and agent loops.
 
 **Rule of thumb:** start with Q4_K_M. Only move up if you notice the model stumbling on hard reasoning tasks.
 

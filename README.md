@@ -49,7 +49,7 @@ The site uses static export (`output: 'export'` in `next.config.ts`). Every push
 
 ## Connect
 
-- **Portfolio:** [rakibul-labs.netlify.app](https://rakibul-labs.netlify.app/)
+- **Portfolio:** [rakibul-labs.vercel.app](https://rakibul-labs.vercel.app/)
 - **GitHub:** [@rakibuilds](https://github.com/rakibuilds)
 - **X (Twitter):** [@rakibuilds](https://x.com/rakibuilds)
 - **LinkedIn:** [Rakibul Islam](https://www.linkedin.com/in/rakibul4210i)

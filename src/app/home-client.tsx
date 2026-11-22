@@ -43,7 +43,7 @@ export default function Home({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
           >
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 md:mb-6 leading-[1.08]">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-4 md:mb-6 leading-[1.08]">
               Building <br className="md:hidden" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">
                 AI systems
@@ -93,7 +93,7 @@ export default function Home({
         >
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-3 md:gap-6">
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 md:mb-3">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-bold mb-2 md:mb-3">
                 Active <span className="text-cyan-400">Experiments</span>
               </h2>
               <p className="text-gray-400 max-w-lg text-sm md:text-base">
@@ -132,7 +132,7 @@ export default function Home({
         >
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-3 md:gap-6">
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 md:mb-3">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-bold mb-2 md:mb-3">
                 Live <span className="text-blue-400">Projects</span>
               </h2>
               <p className="text-gray-400 max-w-lg text-sm md:text-base">
@@ -171,7 +171,7 @@ export default function Home({
         >
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-3 md:gap-6">
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-2 md:mb-3">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl font-bold mb-2 md:mb-3">
                 Recent <span className="text-purple-400">Lab Notes</span>
               </h2>
               <p className="text-gray-400 max-w-lg text-sm md:text-base">

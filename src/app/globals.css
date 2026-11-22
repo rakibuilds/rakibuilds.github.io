@@ -7,13 +7,13 @@
   --foreground: #ffffff;
 }
 
-/* After the @plugin line */
+/* Prose (blog/notes) overrides */
 .prose {
   --tw-prose-body: #d1d5db;
   --tw-prose-headings: #ffffff;
-  --tw-prose-links: #34d399;      /* emerald-400 */
+  --tw-prose-links: #34d399;
   --tw-prose-bold: #ffffff;
-  --tw-prose-code: #a5f3fc;       /* cyan-200 */
+  --tw-prose-code: #a5f3fc;
   --tw-prose-pre-bg: #0a0c14;
   --tw-prose-pre-code: #e5e7eb;
   --tw-prose-borders: rgba(255, 255, 255, 0.1);
@@ -23,11 +23,14 @@
   --tw-prose-th-borders: rgba(255, 255, 255, 0.15);
   --tw-prose-td-borders: rgba(255, 255, 255, 0.08);
 }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-space-grotesk), ui-monospace, SFMono-Regular, monospace;
+
+  --font-sans:    var(--font-inter),          ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk),  ui-sans-serif, system-ui, sans-serif;  /* ← Space Grotesk lives here */
+  --font-mono:    ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;  /* ← real mono */
 }
 
 body {
@@ -37,17 +40,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom scrollbar for premium feel */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #03040a;
-}
-::-webkit-scrollbar-thumb {
-  background: #1f2937;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #374151;
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #03040a; }
+::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #374151; }

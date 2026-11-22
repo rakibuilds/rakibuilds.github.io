@@ -88,7 +88,7 @@ export default function ProjectCard({
             </div>
 
             <h3
-              className={`text-lg md:text-xl font-bold mb-2 ${style.titleHover} transition-colors`}
+              className={`font-display text-lg md:text-xl font-bold mb-2 ${style.titleHover} transition-colors`}
             >
               {project.title}
             </h3>

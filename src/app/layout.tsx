@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   },
   description:
     "Rakibul AI Labs is a premier AI research sandbox based in Assam, India. We build self-hosted AI infrastructure, run local LLMs, and develop agentic AI workflows. Explore our experiments in privacy-first AI.",
+  verification: {
+    google: "F-rcscn24is7V-_PEj26cbBsf7TnfnSxiXNYln6_qrg",
+  },
   keywords: [
     "AI in Assam",
     "Rakibul AI Labs",
